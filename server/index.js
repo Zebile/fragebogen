@@ -41,7 +41,8 @@ app.post('/api/save-answers', (req, res) => {
 });
 
 app.get('/api/get-word', (req, res) => {
-  if (!fs.existsSync(WORD_FILE)) return res.status(404).send('No Word file uploaded');
+  if (!fs.existsSync(WORD_FILE))
+    return res.status(404).send('No Word file uploaded');
   res.sendFile(WORD_FILE);
 });
 

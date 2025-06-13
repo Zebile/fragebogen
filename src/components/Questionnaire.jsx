@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Question from "./Question";
+import React, { useState } from 'react';
+import Question from './Question';
 
 export default function Questionnaire({ data, code }) {
   const [answers, setAnswers] = useState({});
@@ -24,12 +24,12 @@ export default function Questionnaire({ data, code }) {
   const onSubmit = () => {
     // Hier sendest du die Antworten an den Server
     const payload = { code, answers, timestamp: new Date().toISOString() };
-    fetch("/api/save-answers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch('/api/save-answers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).then(() => {
-      alert("Danke für deine Teilnahme!");
+      alert('Danke für deine Teilnahme!');
       window.location.reload();
     });
   };
@@ -42,7 +42,12 @@ export default function Questionnaire({ data, code }) {
         <p className="mb-4 italic text-gray-600">{currentGroup.info}</p>
       )}
       {currentGroup.questions.map((q) => (
-        <Question key={q.id} question={q} onAnswer={onAnswer} answer={answers[q.id]} />
+        <Question
+          key={q.id}
+          question={q}
+          onAnswer={onAnswer}
+          answer={answers[q.id]}
+        />
       ))}
 
       <div className="mt-6 flex justify-between">

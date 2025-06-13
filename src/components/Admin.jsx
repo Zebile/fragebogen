@@ -7,12 +7,12 @@ export default function Admin({ onExit }) {
 
   useEffect(() => {
     fetch('/api/download-excel')
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setAnswers)
       .catch(() => setAnswers([]));
   }, []);
 
-  const onFileChange = e => {
+  const onFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
@@ -25,8 +25,8 @@ export default function Admin({ onExit }) {
       method: 'POST',
       body: formData,
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.success) alert('Datei erfolgreich hochgeladen!');
         else alert('Upload fehlgeschlagen');
       })
@@ -64,4 +64,18 @@ export default function Admin({ onExit }) {
         <h3 className="text-xl font-semibold mb-2">Antworten exportieren</h3>
         <button
           onClick={exportExcel}
-          class
+          className="ml-4 bg-green-600 text-white py-1 px-3 rounded"
+        >
+          Exportieren
+        </button>
+      </section>
+
+      <button
+        onClick={onExit}
+        className="mt-4 bg-gray-400 text-white py-1 px-3 rounded"
+      >
+        Zurück
+      </button>
+    </div>
+  );
+}

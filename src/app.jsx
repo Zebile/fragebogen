@@ -11,15 +11,15 @@ export default function App() {
   // Lade Word-Datei vom Server beim Start
   useEffect(() => {
     fetch('/api/get-word')
-      .then(res => {
+      .then((res) => {
         if (res.ok) return res.blob();
         else throw new Error('No Word file uploaded');
       })
-      .then(blob => {
+      .then((blob) => {
         const file = new File([blob], 'questionnaire.docx');
         return DocxParser(file);
       })
-      .then(parsed => setQuestionnaireData(parsed))
+      .then((parsed) => setQuestionnaireData(parsed))
       .catch(() => setQuestionnaireData(null));
   }, []);
 
@@ -31,8 +31,16 @@ export default function App() {
     return (
       <div className="p-6 max-w-xl mx-auto text-center">
         <h1 className="text-3xl font-bold mb-4">Fragebogen App</h1>
-        <p>Keine Fragebogendatei hochgeladen. Bitte Admin kontaktieren oder selbst hochladen.</p>
-        <button onClick={() => setIsAdmin(true)} className="mt-6 bg-blue-600 text-white py-2 px-4 rounded">Zum Admin Bereich</button>
+        <p>
+          Keine Fragebogendatei hochgeladen. Bitte Admin kontaktieren oder
+          selbst hochladen.
+        </p>
+        <button
+          onClick={() => setIsAdmin(true)}
+          className="mt-6 bg-blue-600 text-white py-2 px-4 rounded"
+        >
+          Zum Admin Bereich
+        </button>
       </div>
     );
   }
@@ -41,9 +49,7 @@ export default function App() {
     return <CodeScreen onComplete={setUserCode} />;
   }
 
-  return (
-    <Questionnaire data={questionnaireData} code={userCode} />
-  );
+  return <Questionnaire data={questionnaireData} code={userCode} />;
 }
 
 function CodeScreen({ onComplete }) {
@@ -63,25 +69,27 @@ function CodeScreen({ onComplete }) {
       <input
         placeholder="Erste 2 Buchstaben der Mutter"
         value={mother}
-        onChange={e => setMother(e.target.value.toUpperCase())}
+        onChange={(e) => setMother(e.target.value.toUpperCase())}
         className="border p-2 rounded w-full"
       />
       <input
         placeholder="Geburtstag (Tag, z.B. 27)"
         value={day}
-        onChange={e => setDay(e.target.value)}
+        onChange={(e) => setDay(e.target.value)}
         className="border p-2 rounded w-full"
         maxLength={2}
       />
       <input
         placeholder="Erste 2 Buchstaben Nachname"
         value={lastname}
-        onChange={e => setLastname(e.target.value.toUpperCase())}
+        onChange={(e) => setLastname(e.target.value.toUpperCase())}
         className="border p-2 rounded w-full"
       />
       <button
         onClick={generateCode}
-        disabled={mother.length < 2 || lastname.length < 2 || !/^\d{1,2}$/.test(day)}
+        disabled={
+          mother.length < 2 || lastname.length < 2 || !/^\d{1,2}$/.test(day)
+        }
         className="bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50"
       >
         Code generieren
