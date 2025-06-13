@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Questionnaire from './components/Questionnaire';
 import Admin from './components/Admin';
 import DocxParser from './lib/docxParser';
 
 export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/admin" element={<AdminWrapper />} />
+        <Route path="/*" element={<MainWrapper />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function MainWrapper() {
   const [userCode, setUserCode] = useState(null);
   const [questionnaireData, setQuestionnaireData] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
 
   // Lade Word-Datei vom Server beim Start
   useEffect(() => {
@@ -23,10 +35,6 @@ export default function App() {
       .catch(() => setQuestionnaireData(null));
   }, []);
 
-  if (isAdmin) {
-    return <Admin onExit={() => setIsAdmin(false)} />;
-  }
-
   if (!questionnaireData) {
     return (
       <div className="p-6 max-w-xl mx-auto text-center">
@@ -36,7 +44,7 @@ export default function App() {
           selbst hochladen.
         </p>
         <button
-          onClick={() => setIsAdmin(true)}
+          onClick={() => navigate('/admin')}
           className="mt-6 bg-blue-600 text-white py-2 px-4 rounded"
         >
           Zum Admin Bereich
@@ -50,6 +58,11 @@ export default function App() {
   }
 
   return <Questionnaire data={questionnaireData} code={userCode} />;
+}
+
+function AdminWrapper() {
+  const navigate = useNavigate();
+  return <Admin onExit={() => navigate('/')} />;
 }
 
 function CodeScreen({ onComplete }) {
